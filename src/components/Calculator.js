@@ -15,6 +15,8 @@ const Calculator = () => {
       }
     } else if (value === 'C') {
       setInput('');
+    } else if (value === '%') {
+      setInput(input + '/100');
     } else {
       setInput(input + value);
     }
@@ -35,9 +37,10 @@ const Calculator = () => {
     { value: '-', className: 'operation' },
     { value: '0', className: '' },
     { value: '.', className: '' },
-    { value: '=', className: 'equal' },
+    { value: '%', className: 'operation' },
     { value: '+', className: 'operation' },
     { value: 'C', className: '' },
+    { value: '=', className: 'equal' },
   ];
 
   return (
