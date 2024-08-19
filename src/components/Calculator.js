@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from './Button';
 import Display from './Display';
 import './Calculator.css';
 import useCalculator from './useCalculator';
 
-const Calculator = () => {
+const Calculator = ({ addToHistory }) => {
   const { input, handleButtonClick } = useCalculator();
+
+  const handleEqualsClick = () => {
+    if (input.trim() === '') return;
+
+    try {
+      const result = eval(input).toString();
+      addToHistory(`${input} = ${result}`);
+      handleButtonClick('=');
+    } catch {
+      handleButtonClick('Error');
+    }
+  };
 
   const buttons = [
     { value: '7', className: '' },
@@ -31,13 +43,14 @@ const Calculator = () => {
 
   return (
     <div className="calculator">
+      <h3>Calculator</h3>
       <Display value={input} />
       <div className="buttons">
         {buttons.map((btn, index) => (
           <Button
             key={index}
             value={btn.value}
-            onClick={handleButtonClick}
+            onClick={btn.value === '=' ? handleEqualsClick : () => handleButtonClick(btn.value)}
             className={btn.className}
           />
         ))}
