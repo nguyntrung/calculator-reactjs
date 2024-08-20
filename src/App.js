@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Calculator from './components/Calculator';
 import History from './components/History';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearHistory } from './redux/historySlice';
 import './App.css';
 
 function App() {
-  const dispatch = useDispatch();
-  const history = useSelector((state) => state.history);
+  const [history, setHistory] = useState([]);
 
-  const handleClearHistory = () => {
-    dispatch(clearHistory());
+  const addToHistory = (calculation) => {
+    setHistory([...history, calculation]);
+  };
+
+  const clearHistory = () => {
+    setHistory([]);
   };
 
   return (
@@ -23,8 +24,8 @@ function App() {
             <Link to="/history" className="nav-link">History</Link>
           </nav>
           <Routes>
-            <Route path="/" element={<Calculator />} />
-            <Route path="/history" element={<History history={history} onClearHistory={handleClearHistory} />} />
+            <Route path="/" element={<Calculator addToHistory={addToHistory} />} />
+            <Route path="/history" element={<History history={history} onClearHistory={clearHistory} />} />
           </Routes>
         </header>
       </div>
