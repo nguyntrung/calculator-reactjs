@@ -3,16 +3,19 @@ import Button from './Button';
 import Display from './Display';
 import './Calculator.css';
 import useCalculator from './useCalculator';
+import { useDispatch } from 'react-redux';
+import { addToHistory } from '../redux/historySlice';
 
-const Calculator = ({ addToHistory }) => {
+const Calculator = () => {
   const { input, handleButtonClick } = useCalculator();
+  const dispatch = useDispatch();
 
   const handleEqualsClick = () => {
     if (input.trim() === '') return;
 
     try {
       const result = eval(input).toString();
-      addToHistory(`${input} = ${result}`);
+      dispatch(addToHistory(`${input} = ${result}`));
       handleButtonClick('=');
     } catch {
       handleButtonClick('Error');
